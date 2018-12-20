@@ -1,0 +1,116 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
+	    Scanner sc = new Scanner(System.in);
+        System.out.println("Введите длину провода");
+        int L = sc.nextInt();
+        System.out.println("Введите кол-во птиц, идущих направо");
+        int right = sc.nextInt();
+        System.out.println("Введите кол-во птиц, идущих налево");
+        int left = sc.nextInt();
+        int time = 0;
+        ArrayList<Integer> LeftDistanceRight = new ArrayList<>();
+        ArrayList<Integer> LeftDistanceLeft = new ArrayList<>();
+        System.out.println("Заполните массив расстояния от левого конца до птиц, идущих направо");
+        for (int i = 0; i < right; i++)
+        {
+            System.out.println("Расстояние до " + (i+1) + " птицы");
+            LeftDistanceRight.add(sc.nextInt());
+        }
+        System.out.println("Заполните массив расстояния от левого конца до птиц, идущих налево");
+        for (int i = 0; i < left; i++)
+        {
+            System.out.println("Расстояние до " + (i+1) + " птицы");
+            LeftDistanceLeft.add(sc.nextInt());
+        }
+        while ((!LeftDistanceRight.isEmpty())||(!LeftDistanceLeft.isEmpty()))
+        {
+            GoRight(LeftDistanceRight, LeftDistanceLeft);
+            GoLeft(LeftDistanceLeft, LeftDistanceRight);
+            time += 1;
+            if (!LeftDistanceRight.isEmpty())
+            {
+                for (int i = 0; i < LeftDistanceRight.size(); i++)
+                {
+                    if (LeftDistanceRight.get(i) == L)
+                    {
+                        System.out.println("Птица улетела с правого конца провода через " + time + " секунд");
+                        LeftDistanceRight.remove(i);
+                        AllReverse(LeftDistanceRight, LeftDistanceLeft);
+                    }
+                }
+            }
+            if (!LeftDistanceLeft.isEmpty())
+            {
+                for (int i = 0; i < LeftDistanceLeft.size(); i++)
+                {
+                    if (LeftDistanceLeft.get(i) == 0)
+                    {
+                        System.out.println("Птица улетела с левого конца провода через " + time + " секунд");
+                        LeftDistanceLeft.remove(i);
+                        AllReverse(LeftDistanceLeft, LeftDistanceRight);
+                    }
+                }
+            }
+        }
+        System.out.println("Последняя птица улетела через " + time + " секунд");
+    }
+    private static void GoLeft(ArrayList<Integer> list1, ArrayList<Integer> list2){
+        for (int i = 0; i < list1.size(); i++)
+        {
+            CheckReverse(list1, list2);
+            list1.set(i, list1.get(i) - 1);
+        }
+    }
+    private static void GoRight(ArrayList<Integer> list1, ArrayList<Integer> list2){
+        for (int i = 0; i < list1.size(); i++)
+        {
+            CheckReverse(list2, list1);
+            list1.set(i, list1.get(i) + 1);
+        }
+    }
+    private static void CheckReverse(ArrayList<Integer> left, ArrayList<Integer> right){
+        int copy;
+        if (left.size() < right.size())
+        {
+            for (int i = 0; i < right.size(); i++)
+            {
+                for (int j = 0; j < left.size(); j++)
+                {
+                    if ((left.get(j) > right.get(i)) && ((left.get(j)) - right.get(i) <= 2))
+                    {
+                        copy = left.get(j);
+                        left.set(j, right.get(i));
+                        right.set(i, copy);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < left.size(); i++)
+            {
+                for (int j = 0; j < right.size(); j++)
+                {
+                    if ((left.get(i) > right.get(j)) && ((left.get(i)) - right.get(j) <= 2))
+                    {
+                        copy = left.get(i);
+                        left.set(i, right.get(j));
+                        right.set(j, copy);
+                    }
+                }
+            }
+        }
+    }
+    private static void AllReverse(ArrayList<Integer> list1, ArrayList<Integer> list2){
+        ArrayList<Integer> copy = new ArrayList<>();
+        copy.addAll(list1);
+        list1.clear();
+        list1.addAll(list2);
+        list2.clear();
+        list2.addAll(copy);
+   }
+}
