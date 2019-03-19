@@ -1,0 +1,43 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+int ToTernary(int source) {
+    int mod, result = 0, step = 1;
+    while(source != 0)
+    {
+        mod = source % 3;
+        source = source / 3;
+        result += step*mod;
+        step *= 10;
+    }
+    return result;
+}
+
+int ToDecimal(char str[]){
+    int result = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        result += (str[i]-48) * pow(3,9-i);
+    }
+    return result;
+}
+
+int main() {
+    int a;
+    cout << "Введите число" << endl;
+    cin >> a;
+    char str[5];
+    char str2[10];
+    sprintf(str, "%d", ToTernary(a));
+    int count = 0;
+    for (int i = 0; i < 5; i++)
+    {
+        str2[count] = str[i];
+        count++;
+        str2[count] = str[i];
+        count++;
+    }
+    cout << ToDecimal(str2);
+    return 0;
+}
