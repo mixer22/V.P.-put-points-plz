@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n,m;
+    cout << "Enter n" << endl;
+    cin >> n;
+    cout << "Enter m" << endl;
+    cin >> m;
+    int num = n*m;
+    int **ptrarray = new int* [n];
+    for (int count = 0; count < n; count++)
+    {
+        ptrarray[count] = new int[m];
+    }
+    ptrarray[0][0] = num;
+    ptrarray[n-1][m-1] = 1;
+    num--;
+    int i = 1, j = 0, count = 0;
+    while (num > 0)
+    {
+        int k = 0;
+        while (i - k >= 0)
+        {
+            if (num == 1)
+            {
+                num--;
+                break;
+            }
+            if (j+k > m - 1)
+                break;
+            ptrarray[i-k][j+k] = num;
+            num--;
+            k++;
+        }
+        count++;
+        if (count >= n-1)
+            j++;
+        if (i < n-1)
+            i++;
+    }
+    for (int y = 0; y < n; y++)
+    {
+        for (int u = 0; u < m; u++)
+            cout << " " << ptrarray[y][u];
+        cout << endl;
+    }
+    return 0;
+}
